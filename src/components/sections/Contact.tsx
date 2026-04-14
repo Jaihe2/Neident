@@ -1,6 +1,26 @@
 import { useRef, useState } from 'react'
 import { motion, useInView } from 'framer-motion'
-import { Mail, Phone, MapPin, Instagram, ArrowRight, MessageSquare } from 'lucide-react'
+import { Mail, Phone, MapPin, Instagram, ArrowRight, MessageSquare, Loader2 } from 'lucide-react'
+
+// ⚠️  Reemplaza 'YOUR_FORM_ID' con el ID de tu formulario en formspree.io
+const FORMSPREE_ENDPOINT = 'https://formspree.io/f/YOUR_FORM_ID'
+
+const serviceOptions = [
+  'Diagnóstico Empresarial',
+  'Optimización de Procesos',
+  'Automatización',
+  'Transformación Digital',
+  'Consultoría Estratégica',
+  'Página Web',
+  'Todos los anteriores',
+]
+
+const challengeOptions = [
+  'Demasiadas tareas manuales',
+  'No sé por dónde empezar',
+  'Mis procesos no son claros',
+  'Quiero escalar mi operación',
+]
 
 const contactItems = [
   {
@@ -29,31 +49,73 @@ const contactItems = [
   },
 ]
 
+interface FormState {
+  name: string
+  company: string
+  email: string
+  phone: string
+  service: string
+  challenge: string
+  message: string
+}
+
 export default function Contact() {
   const ref = useRef(null)
   const inView = useInView(ref, { once: true, margin: '-80px' })
 
-  const [form, setForm] = useState({ name: '', company: '', email: '', phone: '', message: '' })
-  const [errors, setErrors] = useState<Partial<typeof form>>({})
+  const [form, setForm] = useState<FormState>({
+    name: '', company: '', email: '', phone: '',
+    service: '', challenge: '', message: '',
+  })
+  const [errors, setErrors] = useState<Partial<Record<keyof FormState, string>>>({})
   const [submitted, setSubmitted] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [sendError, setSendError] = useState(false)
 
   const validate = () => {
-    const e: Partial<typeof form> = {}
+    const e: Partial<Record<keyof FormState, string>> = {}
     if (!form.name.trim()) e.name = 'Requerido'
     if (!form.email.trim() || !/\S+@\S+\.\S+/.test(form.email)) e.email = 'Email inválido'
-    if (!form.message.trim()) e.message = 'Requerido'
+    if (!form.service) e.service = 'Selecciona un servicio'
+    if (!form.challenge) e.challenge = 'Selecciona un reto'
     return e
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     const errs = validate()
     if (Object.keys(errs).length) { setErrors(errs); return }
     setErrors({})
-    setSubmitted(true)
+    setLoading(true)
+    setSendError(false)
+
+    try {
+      const response = await fetch(FORMSPREE_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({
+          Nombre: form.name,
+          Empresa: form.company,
+          Correo: form.email,
+          Teléfono: form.phone,
+          Servicio: form.service,
+          'Mayor reto': form.challenge,
+          Mensaje: form.message,
+        }),
+      })
+      if (response.ok) {
+        setSubmitted(true)
+      } else {
+        setSendError(true)
+      }
+    } catch {
+      setSendError(true)
+    } finally {
+      setLoading(false)
+    }
   }
 
-  const fieldStyle = (field: keyof typeof form) => ({
+  const inputStyle = (field: keyof FormState) => ({
     background: 'rgba(255,255,255,0.04)',
     border: `1px solid ${errors[field] ? 'rgba(239,68,68,0.5)' : 'rgba(255,255,255,0.1)'}`,
     borderRadius: '12px',
@@ -78,25 +140,21 @@ export default function Contact() {
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.6 }}
           >
-            {/* Badge */}
             <div className="flex items-center gap-2 w-fit px-3 py-1.5 rounded-full" style={{ border: '1px solid rgba(255,255,255,0.1)', background: 'rgba(255,255,255,0.03)' }}>
               <span className="text-white/50" style={{ fontSize: '13px' }}>✦</span>
               <span className="text-xs uppercase tracking-widest text-white/50 font-medium">Contacto</span>
             </div>
 
-            {/* Headline */}
             <div>
               <h2 className="text-3xl sm:text-4xl font-bold text-white leading-tight tracking-tight">
                 Hablemos de la siguiente etapa de tu operación.
               </h2>
             </div>
 
-            {/* Description */}
             <p className="text-sm text-white/45 leading-relaxed max-w-sm">
-              Este bloque está planteado para captación de leads con fricción mínima: formulario, WhatsApp, correo y presencia local clara para empresas de Monterrey y Nuevo León.
+              Cuéntanos qué necesitas y te respondemos en menos de 24 horas para agendar una primera llamada sin compromiso.
             </p>
 
-            {/* Contact cards */}
             <div className="flex flex-col gap-3">
               {contactItems.map((item) => {
                 const Icon = item.icon
@@ -117,7 +175,6 @@ export default function Contact() {
                     </div>
                   </div>
                 )
-
                 return item.href ? (
                   <a
                     key={item.label}
@@ -143,12 +200,9 @@ export default function Contact() {
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ delay: 0.12, duration: 0.6 }}
           >
-            {/* Form header */}
             <div className="flex items-start justify-between">
               <div>
-                <p className="text-xs uppercase tracking-[0.2em] text-white/35 font-medium mb-3">
-                  Lead Capture
-                </p>
+                <p className="text-xs uppercase tracking-[0.2em] text-white/35 font-medium mb-3">Lead Capture</p>
                 <h3 className="text-xl sm:text-2xl font-bold text-white leading-snug">
                   Cuéntanos qué está frenando hoy a tu empresa.
                 </h3>
@@ -171,22 +225,23 @@ export default function Contact() {
                 </div>
                 <p className="text-white font-semibold">¡Mensaje enviado!</p>
                 <p className="text-sm text-white/45 max-w-xs">Te respondemos en menos de 24 horas para agendar una primera llamada.</p>
-                <button onClick={() => setSubmitted(false)} className="text-xs text-white/30 hover:text-white/60 transition-colors mt-1">
+                <button onClick={() => { setSubmitted(false); setForm({ name: '', company: '', email: '', phone: '', service: '', challenge: '', message: '' }) }} className="text-xs text-white/30 hover:text-white/60 transition-colors mt-1">
                   Enviar otro mensaje
                 </button>
               </div>
             ) : (
-              <form onSubmit={handleSubmit} className="flex flex-col gap-4" noValidate>
-                {/* Row 1 */}
+              <form onSubmit={handleSubmit} className="flex flex-col gap-5" noValidate>
+
+                {/* Nombre + Empresa */}
                 <div className="grid sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-xs text-white/40 mb-2">Nombre</label>
+                    <label className="block text-xs text-white/40 mb-2">Nombre *</label>
                     <input
                       type="text"
                       placeholder="Tu nombre"
                       value={form.name}
                       onChange={e => setForm({ ...form, name: e.target.value })}
-                      style={fieldStyle('name')}
+                      style={inputStyle('name')}
                       onFocus={e => (e.target.style.borderColor = 'rgba(100,206,251,0.4)')}
                       onBlur={e => (e.target.style.borderColor = errors.name ? 'rgba(239,68,68,0.5)' : 'rgba(255,255,255,0.1)')}
                     />
@@ -199,23 +254,23 @@ export default function Contact() {
                       placeholder="Nombre de tu empresa"
                       value={form.company}
                       onChange={e => setForm({ ...form, company: e.target.value })}
-                      style={fieldStyle('company')}
+                      style={inputStyle('company')}
                       onFocus={e => (e.target.style.borderColor = 'rgba(100,206,251,0.4)')}
                       onBlur={e => (e.target.style.borderColor = 'rgba(255,255,255,0.1)')}
                     />
                   </div>
                 </div>
 
-                {/* Row 2 */}
+                {/* Correo + Teléfono */}
                 <div className="grid sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-xs text-white/40 mb-2">Correo</label>
+                    <label className="block text-xs text-white/40 mb-2">Correo *</label>
                     <input
                       type="email"
                       placeholder="correo@empresa.com"
                       value={form.email}
                       onChange={e => setForm({ ...form, email: e.target.value })}
-                      style={fieldStyle('email')}
+                      style={inputStyle('email')}
                       onFocus={e => (e.target.style.borderColor = 'rgba(100,206,251,0.4)')}
                       onBlur={e => (e.target.style.borderColor = errors.email ? 'rgba(239,68,68,0.5)' : 'rgba(255,255,255,0.1)')}
                     />
@@ -228,37 +283,98 @@ export default function Contact() {
                       placeholder="+52 81..."
                       value={form.phone}
                       onChange={e => setForm({ ...form, phone: e.target.value })}
-                      style={fieldStyle('phone')}
+                      style={inputStyle('phone')}
                       onFocus={e => (e.target.style.borderColor = 'rgba(100,206,251,0.4)')}
                       onBlur={e => (e.target.style.borderColor = 'rgba(255,255,255,0.1)')}
                     />
                   </div>
                 </div>
 
-                {/* Row 3 — Reto principal */}
+                {/* Servicio */}
                 <div>
-                  <label className="block text-xs text-white/40 mb-2">Reto principal</label>
-                  <textarea
-                    placeholder="Ej. Tenemos procesos poco claros, seguimiento manual o queremos empezar a automatizar."
-                    value={form.message}
-                    onChange={e => setForm({ ...form, message: e.target.value })}
-                    rows={5}
-                    style={{ ...fieldStyle('message'), resize: 'vertical' }}
-                    onFocus={e => (e.target.style.borderColor = 'rgba(100,206,251,0.4)')}
-                    onBlur={e => (e.target.style.borderColor = errors.message ? 'rgba(239,68,68,0.5)' : 'rgba(255,255,255,0.1)')}
-                  />
-                  {errors.message && <p className="text-xs text-red-400/70 mt-1 pl-1">{errors.message}</p>}
+                  <label className="block text-xs text-white/40 mb-3">¿Qué servicio te interesa? *</label>
+                  <div className="flex flex-wrap gap-2">
+                    {serviceOptions.map((s) => (
+                      <button
+                        key={s}
+                        type="button"
+                        onClick={() => setForm({ ...form, service: s })}
+                        className="text-xs px-3 py-2 rounded-full transition-all duration-200"
+                        style={{
+                          background: form.service === s ? 'rgba(100,206,251,0.15)' : 'rgba(255,255,255,0.04)',
+                          border: `1px solid ${form.service === s ? 'rgba(100,206,251,0.5)' : 'rgba(255,255,255,0.1)'}`,
+                          color: form.service === s ? '#64CEFB' : 'rgba(255,255,255,0.5)',
+                        }}
+                      >
+                        {s}
+                      </button>
+                    ))}
+                  </div>
+                  {errors.service && <p className="text-xs text-red-400/70 mt-2 pl-1">{errors.service}</p>}
                 </div>
 
-                {/* Submit */}
+                {/* Reto */}
+                <div>
+                  <label className="block text-xs text-white/40 mb-3">¿Cuál es tu mayor reto? *</label>
+                  <div className="flex flex-wrap gap-2">
+                    {challengeOptions.map((c) => (
+                      <button
+                        key={c}
+                        type="button"
+                        onClick={() => setForm({ ...form, challenge: c })}
+                        className="text-xs px-3 py-2 rounded-full transition-all duration-200"
+                        style={{
+                          background: form.challenge === c ? 'rgba(100,206,251,0.15)' : 'rgba(255,255,255,0.04)',
+                          border: `1px solid ${form.challenge === c ? 'rgba(100,206,251,0.5)' : 'rgba(255,255,255,0.1)'}`,
+                          color: form.challenge === c ? '#64CEFB' : 'rgba(255,255,255,0.5)',
+                        }}
+                      >
+                        {c}
+                      </button>
+                    ))}
+                  </div>
+                  {errors.challenge && <p className="text-xs text-red-400/70 mt-2 pl-1">{errors.challenge}</p>}
+                </div>
+
+                {/* Mensaje opcional */}
+                <div>
+                  <label className="block text-xs text-white/40 mb-2">Cuéntanos más (opcional)</label>
+                  <textarea
+                    placeholder="Cualquier detalle adicional sobre tu empresa o situación."
+                    value={form.message}
+                    onChange={e => setForm({ ...form, message: e.target.value })}
+                    rows={3}
+                    style={{ ...inputStyle('message'), resize: 'vertical' }}
+                    onFocus={e => (e.target.style.borderColor = 'rgba(100,206,251,0.4)')}
+                    onBlur={e => (e.target.style.borderColor = 'rgba(255,255,255,0.1)')}
+                  />
+                </div>
+
+                {sendError && (
+                  <p className="text-xs text-red-400/70 text-center">
+                    Error al enviar. Intenta de nuevo o escríbenos directamente.
+                  </p>
+                )}
+
                 <button
                   type="submit"
-                  className="group flex items-center justify-center gap-2 w-full py-4 rounded-full bg-white font-semibold text-sm transition-all duration-300 hover:bg-[#64CEFB]"
+                  disabled={loading}
+                  className="group flex items-center justify-center gap-2 w-full py-4 rounded-full bg-white font-semibold text-sm transition-all duration-300 hover:bg-[#64CEFB] disabled:opacity-60"
                   style={{ color: '#000' }}
                 >
-                  Enviar mensaje
-                  <ArrowRight size={15} className="transition-transform duration-300 group-hover:translate-x-1" />
+                  {loading ? (
+                    <>
+                      <Loader2 size={15} className="animate-spin" />
+                      Enviando...
+                    </>
+                  ) : (
+                    <>
+                      Agendar llamada
+                      <ArrowRight size={15} className="transition-transform duration-300 group-hover:translate-x-1" />
+                    </>
+                  )}
                 </button>
+
               </form>
             )}
           </motion.div>

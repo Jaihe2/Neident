@@ -6,6 +6,7 @@ import {
   BarChart3,
   Search,
   Layers,
+  Monitor,
   ArrowRight,
 } from 'lucide-react'
 
@@ -59,6 +60,16 @@ const services = [
     highlights: ['Planeación operativa', 'Estructura organizacional', 'Hoja de ruta estratégica'],
     accent: 'rgba(255,255,255,0.04)',
     accentBorder: 'rgba(255,255,255,0.08)',
+  },
+  {
+    icon: Monitor,
+    tag: '06',
+    title: 'Página Web para tu Negocio',
+    description:
+      'Diseñamos y desarrollamos tu presencia digital: desde landing pages hasta sitios completos. Rápido, moderno y optimizado para convertir visitantes en clientes.',
+    highlights: ['Diseño profesional', 'Optimizado para móvil', 'Listo para publicar'],
+    accent: 'rgba(100,206,251,0.05)',
+    accentBorder: 'rgba(100,206,251,0.12)',
   },
 ]
 
