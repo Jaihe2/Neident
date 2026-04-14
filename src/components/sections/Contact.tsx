@@ -3,7 +3,7 @@ import { motion, useInView } from 'framer-motion'
 import { Mail, Phone, MapPin, Instagram, ArrowRight, MessageSquare, Loader2 } from 'lucide-react'
 
 // ⚠️  Reemplaza 'YOUR_FORM_ID' con el ID de tu formulario en formspree.io
-const FORMSPREE_ENDPOINT = 'https://formspree.io/f/YOUR_FORM_ID'
+const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xnjlqwbn'
 
 const serviceOptions = [
   'Diagnóstico Empresarial',
