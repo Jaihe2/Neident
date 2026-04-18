@@ -9,8 +9,6 @@ const serviceOptions = [
   'Diagnóstico Empresarial',
   'Optimización de Procesos',
   'Automatización',
-  'Transformación Digital',
-  'Consultoría Estratégica',
   'Página Web',
   'Todos los anteriores',
 ]

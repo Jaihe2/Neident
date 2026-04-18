@@ -3,9 +3,7 @@ import { motion, useInView } from 'framer-motion'
 import {
   GitBranch,
   Cpu,
-  BarChart3,
   Search,
-  Layers,
   Monitor,
   ArrowRight,
 } from 'lucide-react'
@@ -42,28 +40,8 @@ const services = [
     accentBorder: 'rgba(255,255,255,0.08)',
   },
   {
-    icon: Layers,
-    tag: '04',
-    title: 'Transformación Digital',
-    description:
-      'Acompañamos a tu empresa en la adopción de herramientas digitales adecuadas: no la tecnología más cara, sino la que realmente necesitas.',
-    highlights: ['Selección de herramientas', 'Implementación guiada', 'Capacitación de equipo'],
-    accent: 'rgba(255,255,255,0.04)',
-    accentBorder: 'rgba(255,255,255,0.08)',
-  },
-  {
-    icon: BarChart3,
-    tag: '05',
-    title: 'Consultoría Estratégica',
-    description:
-      'Trabajamos contigo en decisiones de mayor calado: estructura organizacional, modelo operativo, escalabilidad y eficiencia a largo plazo.',
-    highlights: ['Planeación operativa', 'Estructura organizacional', 'Hoja de ruta estratégica'],
-    accent: 'rgba(255,255,255,0.04)',
-    accentBorder: 'rgba(255,255,255,0.08)',
-  },
-  {
     icon: Monitor,
-    tag: '06',
+    tag: '04',
     title: 'Página Web para tu Negocio',
     description:
       'Diseñamos y desarrollamos tu presencia digital: desde landing pages hasta sitios completos. Rápido, moderno y optimizado para convertir visitantes en clientes.',
