@@ -1,3 +1,4 @@
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Navbar from './components/layout/Navbar'
 import Footer from './components/layout/Footer'
 import Hero from './components/sections/Hero'
@@ -9,10 +10,12 @@ import Testimonials from './components/sections/Testimonials'
 import CTA from './components/sections/CTA'
 import Contact from './components/sections/Contact'
 import WhatsAppButton from './components/ui/WhatsAppButton'
+import Privacidad from './components/sections/Privacidad'
+import Terminos from './components/sections/Terminos'
 
-export default function App() {
+function MainPage() {
   return (
-    <div className="bg-black text-white overflow-x-hidden">
+    <>
       <Navbar />
       <main>
         <Hero />
@@ -26,6 +29,20 @@ export default function App() {
       </main>
       <Footer />
       <WhatsAppButton />
-    </div>
+    </>
+  )
+}
+
+export default function App() {
+  return (
+    <BrowserRouter>
+      <div className="bg-black text-white overflow-x-hidden">
+        <Routes>
+          <Route path="/" element={<MainPage />} />
+          <Route path="/privacidad" element={<><Privacidad /><Footer /></>} />
+          <Route path="/terminos" element={<><Terminos /><Footer /></>} />
+        </Routes>
+      </div>
+    </BrowserRouter>
   )
 }

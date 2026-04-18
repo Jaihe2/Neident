@@ -1,22 +1,44 @@
 import { motion } from 'framer-motion'
 import { ArrowUpRight } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
 
-const links = {
-  Servicios: ['Diagnóstico', 'Optimización', 'Automatización', 'Transformación Digital', 'Estrategia'],
-  Empresa: ['Sobre Neident', 'Proceso', 'Blog', 'Casos de éxito'],
-  Legal: ['Aviso de privacidad', 'Términos de uso'],
-}
+const navLinks = [
+  { label: 'Diagnóstico', section: '#servicios' },
+  { label: 'Optimización', section: '#servicios' },
+  { label: 'Automatización', section: '#servicios' },
+  { label: 'Página Web', section: '#servicios' },
+]
+
+const empresaLinks = [
+  { label: 'Sobre Neident', section: '#nosotros' },
+  { label: 'Proceso', section: '#proceso' },
+  { label: 'Casos de éxito', section: '#testimonios' },
+]
+
+const legalLinks = [
+  { label: 'Aviso de privacidad', route: '/privacidad' },
+  { label: 'Términos de uso', route: '/terminos' },
+]
 
 const socials = [
-  { name: 'LinkedIn', href: '#' },
-  { name: 'Instagram', href: '#' },
-  { name: 'X', href: '#' },
+  { name: 'Instagram', href: 'https://instagram.com/neident.mx' },
 ]
 
 export default function Footer() {
-  const handleScroll = (href: string) => {
-    const el = document.querySelector(href)
-    if (el) el.scrollIntoView({ behavior: 'smooth' })
+  const navigate = useNavigate()
+
+  const handleScroll = (section: string) => {
+    const el = document.querySelector(section)
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' })
+    } else {
+      // Si estamos en otra página, volver al inicio y luego hacer scroll
+      navigate('/')
+      setTimeout(() => {
+        const target = document.querySelector(section)
+        if (target) target.scrollIntoView({ behavior: 'smooth' })
+      }, 300)
+    }
   }
 
   return (
@@ -27,10 +49,7 @@ export default function Footer() {
           {/* Brand */}
           <div className="col-span-2 lg:col-span-2 flex flex-col gap-5">
             <button onClick={() => handleScroll('#inicio')} className="flex items-center gap-2.5 group w-fit">
-              <div className="w-8 h-8 rounded-full border-2 border-white flex items-center justify-center group-hover:border-[#64CEFB] transition-colors">
-                <div className="w-2.5 h-2.5 rounded-full bg-white group-hover:bg-[#64CEFB] transition-colors" />
-              </div>
-              <span className="text-white font-semibold tracking-tight">Neident</span>
+              <span className="text-white font-semibold tracking-tight text-lg">Neident</span>
             </button>
 
             <p className="text-sm text-white/40 leading-relaxed max-w-xs">
@@ -43,6 +62,8 @@ export default function Footer() {
                 <a
                   key={s.name}
                   href={s.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="group flex items-center gap-1 text-xs text-white/30 hover:text-white transition-colors"
                 >
                   {s.name}
@@ -52,21 +73,56 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Links */}
-          {Object.entries(links).map(([section, items]) => (
-            <div key={section} className="flex flex-col gap-4">
-              <p className="text-xs uppercase tracking-[0.2em] text-white/30 font-medium">{section}</p>
-              <ul className="flex flex-col gap-2.5">
-                {items.map((item) => (
-                  <li key={item}>
-                    <button className="text-sm text-white/45 hover:text-white transition-colors text-left">
-                      {item}
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
+          {/* Servicios */}
+          <div className="flex flex-col gap-4">
+            <p className="text-xs uppercase tracking-[0.2em] text-white/30 font-medium">Servicios</p>
+            <ul className="flex flex-col gap-2.5">
+              {navLinks.map((item) => (
+                <li key={item.label}>
+                  <button
+                    onClick={() => handleScroll(item.section)}
+                    className="text-sm text-white/45 hover:text-white transition-colors text-left"
+                  >
+                    {item.label}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Empresa */}
+          <div className="flex flex-col gap-4">
+            <p className="text-xs uppercase tracking-[0.2em] text-white/30 font-medium">Empresa</p>
+            <ul className="flex flex-col gap-2.5">
+              {empresaLinks.map((item) => (
+                <li key={item.label}>
+                  <button
+                    onClick={() => handleScroll(item.section)}
+                    className="text-sm text-white/45 hover:text-white transition-colors text-left"
+                  >
+                    {item.label}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Legal */}
+          <div className="flex flex-col gap-4">
+            <p className="text-xs uppercase tracking-[0.2em] text-white/30 font-medium">Legal</p>
+            <ul className="flex flex-col gap-2.5">
+              {legalLinks.map((item) => (
+                <li key={item.label}>
+                  <button
+                    onClick={() => navigate(item.route)}
+                    className="text-sm text-white/45 hover:text-white transition-colors text-left"
+                  >
+                    {item.label}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
 
         {/* Bottom row */}
