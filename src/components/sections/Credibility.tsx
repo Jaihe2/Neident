@@ -22,7 +22,7 @@ const pillars = [
     tag: '03',
     title: 'Arquitectura Escalable',
     description:
-      'Construimos infraestructuras de datos y flujos de trabajo — BI, automatizaciones — pensadas para el crecimiento de la PyME, eliminando la dependencia de tareas manuales repetitivas.',
+      'Construimos infraestructuras de datos y flujos de trabajo (BI, automatizaciones) pensadas para el crecimiento de la PyME, eliminando la dependencia de tareas manuales repetitivas.',
   },
 ]
 
@@ -58,7 +58,7 @@ export default function Credibility() {
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ delay: 0.2, duration: 0.6 }}
           >
-            Somos estudiantes del Tec de Monterrey — y eso no es una limitación, es nuestra ventaja.
+            Somos estudiantes del Tec de Monterrey, y eso no es una limitación, es nuestra ventaja.
           </motion.p>
         </div>
 

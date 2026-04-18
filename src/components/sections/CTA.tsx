@@ -65,7 +65,7 @@ export default function CTA() {
           >
             La primera consulta es gratuita. Platicamos sobre tu operación,
             identificamos oportunidades y te decimos con honestidad si podemos
-            ayudarte — y cómo.
+            ayudarte, y cómo.
           </motion.p>
 
           <motion.div
