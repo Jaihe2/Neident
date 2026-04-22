@@ -118,7 +118,11 @@ export default function Navbar() {
             {/* CTA pill */}
             <button
               onClick={() => handleNav('#contacto')}
-              className="hidden sm:block text-sm font-medium px-4 py-2 rounded-full bg-white text-black hover:bg-[#64CEFB] transition-colors duration-200"
+              className="hidden sm:block text-sm font-semibold px-4 py-2 rounded-full transition-all duration-200 hover:brightness-110"
+              style={{
+                background: 'linear-gradient(135deg, #c9a96e 0%, #e8d5a3 50%, #c9a96e 100%)',
+                color: '#1a0e00',
+              }}
             >
               Agenda consulta
             </button>
