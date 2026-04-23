@@ -112,7 +112,6 @@ function RibbonSVG() {
 
         {/* ── LAYER 2: Diffuse glow behind ribbon (animated, delay 1.5s) ── */}
         <path
-          className="ribbon-pulse-glow"
           d="M -60,960 C 80,850 270,740 420,565
              C 570,390 690,265 930,110
              L 952,164 C 712,318 592,443 442,618
@@ -120,7 +119,9 @@ function RibbonSVG() {
           fill="rgba(60,140,255,0.25)"
           filter="url(#ambientFx)"
           style={{ filter: 'blur(80px)' }}
-        />
+        >
+          <animate attributeName="opacity" values="0.7;1;0.7" dur="4s" begin="1.5s" repeatCount="indefinite" calcMode="spline" keySplines="0.45 0 0.55 1;0.45 0 0.55 1" />
+        </path>
 
         {/* ── Ribbon extension — right tip (creates 3D bend illusion) ── */}
         <path
@@ -133,15 +134,15 @@ function RibbonSVG() {
 
         {/* ── Main ribbon body (animated pulse) ── */}
         <path
-          className="ribbon-pulse"
           d="M -60,960 C 80,850 270,740 420,565
              C 570,390 690,265 930,110
              L 952,164 C 712,318 592,443 442,618
              C 292,793 102,903 -38,1010 Z"
           fill="url(#rg1)"
           filter="url(#glowFx)"
-          opacity="0.97"
-        />
+        >
+          <animate attributeName="opacity" values="0.7;0.97;0.7" dur="4s" repeatCount="indefinite" calcMode="spline" keySplines="0.45 0 0.55 1;0.45 0 0.55 1" />
+        </path>
 
         {/* ── Ribbon extension — bottom fade-out ── */}
         <path
@@ -171,14 +172,15 @@ function RibbonSVG() {
 
         {/* ── LAYER 3: Thin tenue line beside ribbon (animated, delay 0.8s) ── */}
         <path
-          className="ribbon-pulse-thin"
           d="M -80,940 C 60,830 250,720 400,548
              C 550,376 672,252 912,98"
           fill="none"
           stroke="rgba(100,180,255,0.25)"
           strokeWidth="6"
           filter="url(#sharpFx)"
-        />
+        >
+          <animate attributeName="opacity" values="0.7;1;0.7" dur="4s" begin="0.8s" repeatCount="indefinite" calcMode="spline" keySplines="0.45 0 0.55 1;0.45 0 0.55 1" />
+        </path>
 
         {/* ── Gold edge — top edge of ribbon ── */}
         <path
