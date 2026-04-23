@@ -111,17 +111,19 @@ function RibbonSVG() {
         />
 
         {/* ── LAYER 2: Diffuse glow behind ribbon (animated, delay 1.5s) ── */}
-        <path
-          d="M -60,960 C 80,850 270,740 420,565
-             C 570,390 690,265 930,110
-             L 952,164 C 712,318 592,443 442,618
-             C 292,793 102,903 -38,1010 Z"
-          fill="rgba(60,140,255,0.25)"
-          filter="url(#ambientFx)"
-          style={{ filter: 'blur(80px)' }}
-        >
-          <animate attributeName="opacity" values="0.7;1;0.7" dur="4s" begin="1.5s" repeatCount="indefinite" calcMode="spline" keySplines="0.45 0 0.55 1;0.45 0 0.55 1" />
-        </path>
+        <g className="ribbon-move-glow">
+          <path
+            d="M -60,960 C 80,850 270,740 420,565
+               C 570,390 690,265 930,110
+               L 952,164 C 712,318 592,443 442,618
+               C 292,793 102,903 -38,1010 Z"
+            fill="rgba(60,140,255,0.25)"
+            filter="url(#ambientFx)"
+            style={{ filter: 'blur(80px)' }}
+          >
+            <animate attributeName="opacity" values="0.7;1;0.7" dur="4s" begin="1.5s" repeatCount="indefinite" calcMode="spline" keySplines="0.45 0 0.55 1;0.45 0 0.55 1" />
+          </path>
+        </g>
 
         {/* ── Ribbon extension — right tip (creates 3D bend illusion) ── */}
         <path
@@ -132,17 +134,19 @@ function RibbonSVG() {
           filter="url(#sharpFx)"
         />
 
-        {/* ── Main ribbon body (animated pulse) ── */}
-        <path
-          d="M -60,960 C 80,850 270,740 420,565
-             C 570,390 690,265 930,110
-             L 952,164 C 712,318 592,443 442,618
-             C 292,793 102,903 -38,1010 Z"
-          fill="url(#rg1)"
-          filter="url(#glowFx)"
-        >
-          <animate attributeName="opacity" values="0.7;0.97;0.7" dur="4s" repeatCount="indefinite" calcMode="spline" keySplines="0.45 0 0.55 1;0.45 0 0.55 1" />
-        </path>
+        {/* ── Main ribbon body (animated pulse + move) ── */}
+        <g className="ribbon-move">
+          <path
+            d="M -60,960 C 80,850 270,740 420,565
+               C 570,390 690,265 930,110
+               L 952,164 C 712,318 592,443 442,618
+               C 292,793 102,903 -38,1010 Z"
+            fill="url(#rg1)"
+            filter="url(#glowFx)"
+          >
+            <animate attributeName="opacity" values="0.7;0.97;0.7" dur="4s" repeatCount="indefinite" calcMode="spline" keySplines="0.45 0 0.55 1;0.45 0 0.55 1" />
+          </path>
+        </g>
 
         {/* ── Ribbon extension — bottom fade-out ── */}
         <path
