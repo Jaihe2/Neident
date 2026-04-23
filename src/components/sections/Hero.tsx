@@ -110,20 +110,30 @@ function RibbonSVG() {
           filter="url(#ambientFx)"
         />
 
-        {/* ── LAYER 2: Diffuse glow behind ribbon (animated, delay 1.5s) ── */}
-        <g className="ribbon-move-glow">
-          <path
-            d="M -60,960 C 80,850 270,740 420,565
-               C 570,390 690,265 930,110
-               L 952,164 C 712,318 592,443 442,618
-               C 292,793 102,903 -38,1010 Z"
-            fill="rgba(60,140,255,0.25)"
-            filter="url(#ambientFx)"
-            style={{ filter: 'blur(80px)' }}
-          >
-            <animate attributeName="opacity" values="0.7;1;0.7" dur="4s" begin="1.5s" repeatCount="indefinite" calcMode="spline" keySplines="0.45 0 0.55 1;0.45 0 0.55 1" />
-          </path>
-        </g>
+        {/* ── LAYER 2: Diffuse glow behind ribbon (wave morph, delay 0.3s) ── */}
+        <path
+          fill="rgba(60,140,255,0.25)"
+          filter="url(#ambientFx)"
+          style={{ filter: 'blur(80px)' }}
+        >
+          <animate attributeName="opacity" values="0.7;1;0.7" dur="4s" begin="1.5s" repeatCount="indefinite" calcMode="spline" keySplines="0.45 0 0.55 1;0.45 0 0.55 1" />
+          <animate
+            attributeName="d"
+            dur="6s"
+            begin="0.3s"
+            repeatCount="indefinite"
+            calcMode="spline"
+            keyTimes="0;0.25;0.5;0.75;1"
+            keySplines="0.45 0 0.55 1;0.45 0 0.55 1;0.45 0 0.55 1;0.45 0 0.55 1"
+            values="
+              M -60,960 C 80,850 270,740 420,565 C 570,390 690,265 930,110 L 952,164 C 712,318 592,443 442,618 C 292,793 102,903 -38,1010 Z;
+              M -60,960 C 80,815 270,705 420,530 C 570,355 690,230 930,110 L 952,164 C 712,283 592,408 442,583 C 292,758 102,868 -38,1010 Z;
+              M -60,960 C 80,850 270,740 420,565 C 570,390 690,265 930,110 L 952,164 C 712,318 592,443 442,618 C 292,793 102,903 -38,1010 Z;
+              M -60,960 C 80,885 270,775 420,600 C 570,425 690,300 930,110 L 952,164 C 712,353 592,478 442,653 C 292,828 102,938 -38,1010 Z;
+              M -60,960 C 80,850 270,740 420,565 C 570,390 690,265 930,110 L 952,164 C 712,318 592,443 442,618 C 292,793 102,903 -38,1010 Z
+            "
+          />
+        </path>
 
         {/* ── Ribbon extension — right tip (creates 3D bend illusion) ── */}
         <path
@@ -134,19 +144,28 @@ function RibbonSVG() {
           filter="url(#sharpFx)"
         />
 
-        {/* ── Main ribbon body (animated pulse + move) ── */}
-        <g className="ribbon-move">
-          <path
-            d="M -60,960 C 80,850 270,740 420,565
-               C 570,390 690,265 930,110
-               L 952,164 C 712,318 592,443 442,618
-               C 292,793 102,903 -38,1010 Z"
-            fill="url(#rg1)"
-            filter="url(#glowFx)"
-          >
-            <animate attributeName="opacity" values="0.7;0.97;0.7" dur="4s" repeatCount="indefinite" calcMode="spline" keySplines="0.45 0 0.55 1;0.45 0 0.55 1" />
-          </path>
-        </g>
+        {/* ── Main ribbon body (wave morph + opacity pulse) ── */}
+        <path
+          fill="url(#rg1)"
+          filter="url(#glowFx)"
+        >
+          <animate attributeName="opacity" values="0.7;0.97;0.7" dur="4s" repeatCount="indefinite" calcMode="spline" keySplines="0.45 0 0.55 1;0.45 0 0.55 1" />
+          <animate
+            attributeName="d"
+            dur="6s"
+            repeatCount="indefinite"
+            calcMode="spline"
+            keyTimes="0;0.25;0.5;0.75;1"
+            keySplines="0.45 0 0.55 1;0.45 0 0.55 1;0.45 0 0.55 1;0.45 0 0.55 1"
+            values="
+              M -60,960 C 80,850 270,740 420,565 C 570,390 690,265 930,110 L 952,164 C 712,318 592,443 442,618 C 292,793 102,903 -38,1010 Z;
+              M -60,960 C 80,815 270,705 420,530 C 570,355 690,230 930,110 L 952,164 C 712,283 592,408 442,583 C 292,758 102,868 -38,1010 Z;
+              M -60,960 C 80,850 270,740 420,565 C 570,390 690,265 930,110 L 952,164 C 712,318 592,443 442,618 C 292,793 102,903 -38,1010 Z;
+              M -60,960 C 80,885 270,775 420,600 C 570,425 690,300 930,110 L 952,164 C 712,353 592,478 442,653 C 292,828 102,938 -38,1010 Z;
+              M -60,960 C 80,850 270,740 420,565 C 570,390 690,265 930,110 L 952,164 C 712,318 592,443 442,618 C 292,793 102,903 -38,1010 Z
+            "
+          />
+        </path>
 
         {/* ── Ribbon extension — bottom fade-out ── */}
         <path

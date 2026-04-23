@@ -163,24 +163,6 @@
 .ribbon-pulse-glow   { animation: ribbonPulse 4s ease-in-out infinite; animation-delay: 1.5s; }
 .ribbon-pulse-thin   { animation: ribbonPulse 4s ease-in-out infinite; animation-delay: 0.8s; }
 
-@keyframes beamMove {
-  0%   { transform: translateX(-15%); }
-  100% { transform: translateX(15%); }
-}
-
-.ribbon-move {
-  animation: beamMove 6s ease-in-out infinite alternate;
-  transform-box: view-box;
-  transform-origin: center center;
-}
-
-.ribbon-move-glow {
-  animation: beamMove 6s ease-in-out infinite alternate;
-  animation-delay: 0.3s;
-  transform-box: view-box;
-  transform-origin: center center;
-}
-
 .gradient-flow {
   background: linear-gradient(135deg, #4a9eff, #6bb8ff, #89d0ff, #4a9eff);
   background-size: 200%;
